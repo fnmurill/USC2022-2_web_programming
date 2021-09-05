@@ -1,0 +1,66 @@
+﻿@page "/EstudianteAdd"
+
+@using Web2021B.Data.Model
+@using Web2021B.Data.Service
+
+@inject IEstudianteService IEstudianteService
+@inject NavigationManager NavigationManager
+
+<h1>Adicionar Estudiante</h1>
+
+<EditForm Model="@estudiante" OnValidSubmit="@EstudianteInsert">
+    <table>
+        <tr>
+            <td>Código:</td>
+            <td><input type="text" @bind="estudiante.id_estudiante" /></td>
+        </tr>
+        <tr>
+            <td>Nombre:</td>
+            <td><input type="text" @bind="estudiante.nombre"  /></td>
+        </tr>
+        <tr>
+            <td>Celular:</td>
+            <td><input type="text" @bind="estudiante.celular" /></td>
+        </tr>
+        <tr>
+            <td>Universidad:</td>
+            <td><input type="text" @bind="estudiante.universidad" /></td>
+        </tr>
+        <tr>
+            <td>Semestre:</td>
+            <td><input type="text" @bind="estudiante.semestre" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Adicionar" />
+                <input type="button" value="Cancelar" @onclick="@Cancel" />
+            </td>
+        </tr>
+
+    </table>
+
+</EditForm>
+
+
+
+@code {
+
+    Estudiante estudiante = new Estudiante();
+
+    protected async Task EstudianteInsert()
+    {
+        if (await IEstudianteService.EstudianteInsert(estudiante))
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/errorEstudiante");
+        };
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}
